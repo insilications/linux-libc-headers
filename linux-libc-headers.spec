@@ -5,19 +5,21 @@
 # As such, this package does not track the upstream kernel-of-the-day,
 # and sticks to stable points of Linus releases.
 #
+# Usually we like to stick to LTS releases for these headers
+#
 # If you want to update this package, it needs a valid reason (like a new kernel
 # API/ABI you want to use) and likely a glibc rebuild following updating this package
 #
 
 
 Name:           linux-libc-headers
-Version:        3.19
+Version:        4.4
 Release:        10
 License:        GPL-2.0
 Summary:        Headers for the C library that describe the kernel/userspace ABI
 Url:            https://www.kernel.org/
 Group:          devel
-Source0:        https://www.kernel.org/pub/linux/kernel/v3.x/linux-3.19.tar.xz
+Source0:        https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.4.tar.xz
 
 %description
 Headers for the C library that describe the kernel/userspace ABI.
