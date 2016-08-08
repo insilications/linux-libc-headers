@@ -14,7 +14,7 @@
 
 Name:           linux-libc-headers
 Version:        4.4
-Release:        11
+Release:        12
 License:        GPL-2.0
 Summary:        Headers for the C library that describe the kernel/userspace ABI
 Url:            https://www.kernel.org/
