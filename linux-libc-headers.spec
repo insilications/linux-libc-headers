@@ -14,7 +14,7 @@
 
 Name:           linux-libc-headers
 Version:        4.4
-Release:        10
+Release:        11
 License:        GPL-2.0
 Summary:        Headers for the C library that describe the kernel/userspace ABI
 Url:            https://www.kernel.org/
@@ -34,20 +34,20 @@ make allnoconfig %{?_smp_mflags}
 %install
 make headers_install INSTALL_HDR_PATH=%{buildroot}/usr
 # Kernel should not be exporting this header
-rm -f %{buildroot}/%{_includedir}/scsi/scsi.h
+rm -f %{buildroot}//usr/include/scsi/scsi.h
 # The ..install.cmd conflicts between various configure runs
-find %{buildroot}/%{_includedir} -name ..install.cmd | xargs rm -f
+find %{buildroot}/usr/include -name ..install.cmd | xargs rm -f
 
 %files 
-%{_includedir}/asm-generic/*
-%{_includedir}/asm/*
-%{_includedir}/drm/*
-%{_includedir}/linux/*
-%{_includedir}/mtd/*
-%{_includedir}/rdma/*
-%{_includedir}/scsi/*
-%{_includedir}/sound/*
-%{_includedir}/video/*
-%{_includedir}/xen/*
-%{_includedir}/*/.install
+/usr/include/asm-generic/*
+/usr/include/asm/*
+/usr/include/drm/*
+/usr/include/linux/*
+/usr/include/mtd/*
+/usr/include/rdma/*
+/usr/include/scsi/*
+/usr/include/sound/*
+/usr/include/video/*
+/usr/include/xen/*
+/usr/include/*/.install
 /usr/include/misc/cxl.h
