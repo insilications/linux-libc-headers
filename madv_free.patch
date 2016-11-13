@@ -1,0 +1,10 @@
+--- linux-4.4/include/uapi/asm-generic/mman-common.h~	2016-01-10 23:01:32.000000000 +0000
++++ linux-4.4/include/uapi/asm-generic/mman-common.h	2016-11-13 22:56:00.834607933 +0000
+@@ -41,6 +41,7 @@
+ #define MADV_DONTNEED	4		/* don't need these pages */
+ 
+ /* common parameters: try to keep these consistent across architectures */
++#define MADV_FREE	8               /* free pages only if memory pressure */
+ #define MADV_REMOVE	9		/* remove these pages & resources */
+ #define MADV_DONTFORK	10		/* don't inherit across fork */
+ #define MADV_DOFORK	11		/* do inherit across fork */
