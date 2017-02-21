@@ -13,15 +13,13 @@
 
 
 Name:           linux-libc-headers
-Version:        4.4
+Version:        4.9
 Release:        13
 License:        GPL-2.0
 Summary:        Headers for the C library that describe the kernel/userspace ABI
 Url:            https://www.kernel.org/
 Group:          devel
-Source0:        https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.4.tar.xz
-
-Patch1: 	madv_free.patch
+Source0:        https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.9.tar.xz
 
 %description
 Headers for the C library that describe the kernel/userspace ABI.
@@ -29,7 +27,6 @@ Headers for the C library that describe the kernel/userspace ABI.
 
 %prep
 %setup -q -n linux-%{version}
-%patch1 -p1
 
 %build
 make allnoconfig %{?_smp_mflags}
