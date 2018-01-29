@@ -11,6 +11,15 @@
 # API/ABI you want to use) and likely a glibc rebuild following updating this package
 #
 
+#
+# If you have an out of tree driver that adds a userspace interface, we feel sorry
+# for your pain, but this is not the place to add your unofficial permanent ABI.
+# You will need to add a copy of your unofficial ABI to the package(s) that need
+# to use this unofficial ABI, and those packages will need to be recompiled
+# if the ABI changes as part of your upstreaming process.
+#
+
+
 
 Name:           linux-libc-headers
 Version:        4.14
