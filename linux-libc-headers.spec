@@ -28,7 +28,7 @@ License:        GPL-2.0
 Summary:        Headers for the C library that describe the kernel/userspace ABI
 Url:            https://www.kernel.org/
 Group:          devel
-Source0:        https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.19.tar.xz
+Source0:        https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.19.48.tar.xz
 
 BuildRequires: bison
 BuildRequires: flex
@@ -38,7 +38,7 @@ Headers for the C library that describe the kernel/userspace ABI.
 
 
 %prep
-%setup -q -n linux-%{version}
+%setup -q -n linux-%{version}.48
 
 %build
 make allnoconfig %{?_smp_mflags}
