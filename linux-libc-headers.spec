@@ -23,7 +23,7 @@
 
 Name:           linux-libc-headers
 Version:        4.19
-Release:        19
+Release:        20
 License:        GPL-2.0
 Summary:        Headers for the C library that describe the kernel/userspace ABI
 Url:            https://www.kernel.org/
