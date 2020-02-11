@@ -22,23 +22,24 @@
 
 
 Name:           linux-libc-headers
-Version:        4.19
+Version:        5.4
 Release:        20
 License:        GPL-2.0
 Summary:        Headers for the C library that describe the kernel/userspace ABI
 Url:            https://www.kernel.org/
 Group:          devel
-Source0:        https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.19.48.tar.xz
+Source0:        https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.4.19.tar.xz
 
 BuildRequires: bison
 BuildRequires: flex
+BuildRequires: rsync
 
 %description
 Headers for the C library that describe the kernel/userspace ABI.
 
 
 %prep
-%setup -q -n linux-%{version}.48
+%setup -q -n linux-%{version}.19
 
 %build
 make allnoconfig %{?_smp_mflags}
@@ -48,7 +49,7 @@ make headers_install INSTALL_HDR_PATH=%{buildroot}/usr
 # Kernel should not be exporting this header
 rm -f %{buildroot}//usr/include/scsi/scsi.h
 # The ..install.cmd conflicts between various configure runs
-find %{buildroot}/usr/include -name ..install.cmd | xargs rm -f
+find %{buildroot}/usr/include -name ..install.cmd | xargs rm -f || :
 
 %files 
 /usr/include/asm-generic/*
@@ -61,6 +62,8 @@ find %{buildroot}/usr/include -name ..install.cmd | xargs rm -f
 /usr/include/sound/*
 /usr/include/video/*
 /usr/include/xen/*
-/usr/include/*/.install
 /usr/include/misc/cxl.h
 /usr/include/misc/ocxl.h
+/usr/include/misc/fastrpc.h
+/usr/include/misc/habanalabs.h
+/usr/include/misc/xilinx_sdfec.h
