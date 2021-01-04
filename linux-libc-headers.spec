@@ -22,13 +22,13 @@
 
 
 Name:           linux-libc-headers
-Version:        5.4
+Version:        5.10
 Release:        20
 License:        GPL-2.0
 Summary:        Headers for the C library that describe the kernel/userspace ABI
 Url:            https://www.kernel.org/
 Group:          devel
-Source0:        https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.4.19.tar.xz
+Source0:        https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.10.1.tar.xz
 
 BuildRequires: bison
 BuildRequires: flex
@@ -39,7 +39,7 @@ Headers for the C library that describe the kernel/userspace ABI.
 
 
 %prep
-%setup -q -n linux-%{version}.19
+%setup -q -n linux-%{version}.1
 
 %build
 make allnoconfig %{?_smp_mflags}
@@ -67,3 +67,6 @@ find %{buildroot}/usr/include -name ..install.cmd | xargs rm -f || :
 /usr/include/misc/fastrpc.h
 /usr/include/misc/habanalabs.h
 /usr/include/misc/xilinx_sdfec.h
+/usr/include/misc/pvpanic.h
+/usr/include/misc/uacce/hisi_qm.h
+/usr/include/misc/uacce/uacce.h
