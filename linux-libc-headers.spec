@@ -22,13 +22,13 @@
 
 
 Name:           linux-libc-headers
-Version:        5.10
+Version:        5.12
 Release:        20
 License:        GPL-2.0
 Summary:        Headers for the C library that describe the kernel/userspace ABI
 Url:            https://www.kernel.org/
 Group:          devel
-Source0:        https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.10.1.tar.xz
+Source0:        https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.12.1.tar.xz
 
 BuildRequires: bison
 BuildRequires: flex
