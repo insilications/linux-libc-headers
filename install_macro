@@ -1,0 +1,120 @@
+%global __os_install_post %{nil}
+%define debug_package %{nil}
+%define __strip /bin/true
+
+%define ktarget native
+%define kversion %{version}-%{release}.%{ktarget}
+
+InstallKernel() {
+    Target=$1
+    Kversion=$2
+    Arch=x86_64
+    KernelDir=%{buildroot}/usr/lib/kernel
+    DevDir=%{buildroot}/usr/lib/modules/${Kversion}/build
+
+    export V=2
+    export AR=/usr/bin/gcc-ar
+    export RANLIB=/usr/bin/gcc-ranlib
+    export NM=/usr/bin/gcc-nm
+    unset CFLAGS
+    unset CXXFLAGS
+    unset LDFLAGS
+    export CFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe"
+    export KCFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe"
+
+    mkdir   -p ${KernelDir}
+    install -m 644 ${Target}/.config    ${KernelDir}/config-${Kversion}
+    install -m 644 ${Target}/System.map ${KernelDir}/System.map-${Kversion}
+    install -m 644 ${Target}/vmlinux    ${KernelDir}/vmlinux-${Kversion}
+    install -m 644 %{SOURCE2}           ${KernelDir}/cmdline-${Kversion}
+    cp  ${Target}/arch/x86/boot/bzImage ${KernelDir}/org.clearlinux.${Target}.%{version}-%{release}
+    chmod 755 ${KernelDir}/org.clearlinux.${Target}.%{version}-%{release}
+
+    mkdir -p %{buildroot}/usr/lib/modules
+    make O=${Target} ARCH=${Arch} INSTALL_MOD_PATH=%{buildroot}/usr V=2 modules_install
+
+#     make O=${Target} ARCH=${Arch} CFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" KCFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" PREFIX=/usr WERROR=0 INSTALL_ROOT=%{buildroot} DESTDIR=%{buildroot} MANDIR=/usr/share/man PYTHON=/usr/bin/python3 PYTHON_CONFIG=/usr/bin/python3-config V=1 -j1 tools/acpi tools/acpi_install || :
+
+    make O=${Target} ARCH=${Arch} CFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" KCFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" PREFIX=/usr WERROR=0 CONFDIR=/usr/share/cpupower INSTALL_ROOT=%{buildroot} DESTDIR=%{buildroot} MANDIR=/usr/share/man PYTHON=/usr/bin/python3 PYTHON_CONFIG=/usr/bin/python3-config V=1 -j1 tools/cpupower tools/cpupower_install || :
+
+    make O=${Target} ARCH=${Arch} CFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" KCFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" PREFIX=/usr WERROR=0 INSTALL_ROOT=%{buildroot} DESTDIR=%{buildroot} MANDIR=/usr/share/man PYTHON=/usr/bin/python3 PYTHON_CONFIG=/usr/bin/python3-config V=1 -C tools/ -j1 firmware || :
+    install -m 755 tools/firmware/ihex2fw %{buildroot}/usr/bin/ || :
+
+    make O=${Target} ARCH=${Arch} CFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" KCFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" PREFIX=/usr WERROR=0 INSTALL_ROOT=%{buildroot} DESTDIR=%{buildroot} MANDIR=/usr/share/man PYTHON=/usr/bin/python3 PYTHON_CONFIG=/usr/bin/python3-config V=1 -C tools/ -j1 intel-speed-select intel-speed-select_install || :
+
+    make O=${Target} ARCH=${Arch} CFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" KCFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" PREFIX=/usr WERROR=0 INSTALL_ROOT=%{buildroot} DESTDIR=%{buildroot} MANDIR=/usr/share/man PYTHON=/usr/bin/python3 PYTHON_CONFIG=/usr/bin/python3-config V=1 -C tools/ -j1 objtool || :
+    install -m 755 native/objtool/objtool %{buildroot}/usr/bin/ || :
+    install -m 755 native/objtool/fixdep %{buildroot}/usr/bin/ || :
+    install -m 755 native/objtool/libsubcmd.a %{buildroot}/usr/lib64/ || :
+
+    make O=${Target} ARCH=${Arch} CFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" KCFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" PREFIX=/usr WERROR=0 INSTALL_ROOT=%{buildroot} DESTDIR=%{buildroot} MANDIR=/usr/share/man PYTHON=/usr/bin/python3 PYTHON_CONFIG=/usr/bin/python3-config V=1 -C tools/ -j1 pci pci_install || :
+
+#     make O=${Target} ARCH=${Arch} PREFIX=/usr WERROR=0 INSTALL_ROOT=%{buildroot} DESTDIR=%{buildroot} MANDIR=/usr/share/man PYTHON=/usr/bin/python3 PYTHON_CONFIG=/usr/bin/python3-config V=1 -C tools/ -j1 bootconfig bootconfig_install || :
+
+    make O=${Target} ARCH=${Arch} CFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" KCFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" PREFIX=/usr WERROR=0 INSTALL_ROOT=%{buildroot} DESTDIR=%{buildroot} MANDIR=/usr/share/man PYTHON=/usr/bin/python3 PYTHON_CONFIG=/usr/bin/python3-config V=1 -C tools/ -j1 spi spi_install || :
+
+    make O=${Target} ARCH=${Arch} CFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" KCFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" PREFIX=/usr WERROR=0 INSTALL_ROOT=%{buildroot} DESTDIR=%{buildroot} MANDIR=/usr/share/man PYTHON=/usr/bin/python3 PYTHON_CONFIG=/usr/bin/python3-config V=1 -C tools/ -j1 tmon_install || :
+
+    make O=${Target} ARCH=${Arch} CFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" KCFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" PREFIX=/usr WERROR=0 INSTALL_ROOT=%{buildroot} DESTDIR=%{buildroot} MANDIR=/usr/share/man PYTHON=/usr/bin/python3 PYTHON_CONFIG=/usr/bin/python3-config V=1 -C tools/ -j1 turbostat turbostat_install || :
+
+    make O=${Target} ARCH=${Arch} CFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" KCFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" PREFIX=/usr WERROR=0 INSTALL_ROOT=%{buildroot} DESTDIR=%{buildroot} MANDIR=/usr/share/man PYTHON=/usr/bin/python3 PYTHON_CONFIG=/usr/bin/python3-config V=1 -C tools/ -j1 x86_energy_perf_policy_install || :
+
+    rm -f %{buildroot}/usr/lib/modules/${Kversion}/build
+    rm -f %{buildroot}/usr/lib/modules/${Kversion}/source
+
+    mkdir -p ${DevDir}
+    find . -type f -a '(' -name 'Makefile*' -o -name 'Kbuild*' -o -name 'Kconfig*' ')' -exec cp -t ${DevDir} --parents -pr {} +
+    find . -type f -a '(' -name '*.sh' -o -name '*.pl' ')' -exec cp -t ${DevDir} --parents -pr {} +
+    cp -t ${DevDir} -pr ${Target}/{Module.symvers,tools}
+    ln -s ../../../kernel/config-${Kversion} ${DevDir}/.config
+    ln -s ../../../kernel/System.map-${Kversion} ${DevDir}/System.map
+    cp -t ${DevDir} --parents -pr arch/x86/include
+    cp -t ${DevDir}/arch/x86/include -pr ${Target}/arch/x86/include/*
+    cp -t ${DevDir}/include -pr include/*
+    cp -t ${DevDir}/include -pr ${Target}/include/*
+    cp -t ${DevDir} --parents -pr scripts/*
+    cp -t ${DevDir}/scripts -pr ${Target}/scripts/*
+    find  ${DevDir}/scripts -type f -name '*.[cho]' -exec rm -v {} +
+    find  ${DevDir} -type f -name '*.cmd' -exec rm -v {} +
+    # Cleanup any dangling links
+    find ${DevDir} -type l -follow -exec rm -v {} +
+
+    # Kernel default target link
+    ln -s org.clearlinux.${Target}.%{version}-%{release} %{buildroot}/usr/lib/kernel/default-${Target}
+}
+
+# cpio file for keyboard drivers
+createCPIO() {
+
+    Target=$1
+    Kversion=$2
+    KernelDir=%{buildroot}/usr/lib/kernel
+    ModDir=/usr/lib/modules/${Kversion}
+
+    mkdir -p cpiofile${ModDir}/kernel/drivers/input/{serio,keyboard}
+    mkdir -p cpiofile${ModDir}/kernel/drivers/hid
+    cp %{buildroot}${ModDir}/kernel/drivers/input/serio/i8042.ko      cpiofile${ModDir}/kernel/drivers/input/serio || :
+    cp %{buildroot}${ModDir}/kernel/drivers/input/serio/libps2.ko     cpiofile${ModDir}/kernel/drivers/input/serio || :
+    cp %{buildroot}${ModDir}/kernel/drivers/input/keyboard/atkbd.ko   cpiofile${ModDir}/kernel/drivers/input/keyboard || :
+    cp %{buildroot}${ModDir}/kernel/drivers/hid/hid-logitech-dj.ko    cpiofile${ModDir}/kernel/drivers/hid || :
+    cp %{buildroot}${ModDir}/kernel/drivers/hid/hid-logitech-hidpp.ko cpiofile${ModDir}/kernel/drivers/hid || :
+    cp %{buildroot}${ModDir}/kernel/drivers/hid/hid-apple.ko          cpiofile${ModDir}/kernel/drivers/hid || :
+    cp %{buildroot}${ModDir}/modules.order   cpiofile${ModDir}
+    cp %{buildroot}${ModDir}/modules.builtin cpiofile${ModDir}
+
+    depmod -b cpiofile/usr ${Kversion}
+
+    (
+      cd cpiofile
+      find . | cpio --create --format=newc \
+        | xz --check=crc32 --lzma2=dict=512KiB > ${KernelDir}/initrd-org.clearlinux.${Target}.%{version}-%{release}
+    )
+}
+
+InstallKernel %{ktarget} %{kversion}
+createCPIO %{ktarget} %{kversion}
+
+rm -rf %{buildroot}/usr/lib/firmware
+mkdir -p %{buildroot}/usr/share/package-licenses/linux
+cp COPYING %{buildroot}/usr/share/package-licenses/linux/COPYING
+cp -a LICENSES/* %{buildroot}/usr/share/package-licenses/linux
