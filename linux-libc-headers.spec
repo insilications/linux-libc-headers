@@ -22,13 +22,13 @@
 
 
 Name:           linux-libc-headers
-Version:        5.15
+Version:        5.19.0
 Release:        21
 License:        GPL-2.0
 Summary:        Headers for the C library that describe the kernel/userspace ABI
 Url:            https://www.kernel.org/
 Group:          devel
-Source0:        https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.15.16.tar.xz
+Source0:        file:///insilications/apps/linux-5.19.0.tar.gz
 
 BuildRequires: bison
 BuildRequires: flex
@@ -39,7 +39,7 @@ Headers for the C library that describe the kernel/userspace ABI.
 
 
 %prep
-%setup -q -n linux-%{version}.16
+%setup -q -n linux-%{version}
 
 %build
 make allnoconfig %{?_smp_mflags}
