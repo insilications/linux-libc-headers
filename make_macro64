@@ -2,32 +2,4 @@
 %define debug_package %{nil}
 %define __strip /bin/true
 
-%define ktarget native
-%define kversion %{version}-%{release}.%{ktarget}
-
-BuildKernel() {
-    Target=$1
-    Arch=x86_64
-    ExtraVer="-%{release}.${Target}"
-
-    export V=2
-    export AR=/usr/bin/gcc-ar
-    export RANLIB=/usr/bin/gcc-ranlib
-    export NM=/usr/bin/gcc-nm
-    unset CFLAGS
-    unset CXXFLAGS
-    unset LDFLAGS
-    export CFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe"
-    export KCFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe"
-
-    perl -p -i -e "s/^EXTRAVERSION.*/EXTRAVERSION = ${ExtraVer}/" Makefile
-
-    make O=${Target} -s mrproper
-    cp config ${Target}/.config
-
-    make O=${Target} -s ARCH=${Arch} olddefconfig
-    make O=${Target} ARCH=${Arch} V=2 KCFLAGS="-O3 -march=skylake -mtune=skylake -Wl,-O2 -falign-functions=32 -mprefer-vector-width=256 -fuse-ld=bfd -fno-semantic-interposition -fno-stack-protector -malign-data=cacheline -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-avx2 -O3 -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize -mpopcnt -pipe" -j20
-}
-
-cp %{SOURCE1} .
-BuildKernel %{ktarget}
+make allnoconfig %{?_smp_mflags}
